@@ -1,0 +1,39 @@
+<html>
+	<meta charset = "utf8">
+	<head>
+		<title> My first webpage </title>
+	</head>
+	<body>
+		<table align="center">
+			<tr><td align = "center">ĐĂNG NHẬP</td></tr>
+			<form method = "POST">
+				<tr><td> <input type="text" name = "User" placeholder = "Tên đăng nhập"></td></tr>
+				<tr><td> <input type="password" name = "Password" placeholder = "Mật khẩu"></td></tr>
+				<tr><td> <input type="checkbox" name = "memopass">Lưu lại mật khẩu</td></tr>
+				<tr><td> <input type="submit" name = "dangnhap" value = "Đăng nhập"></td></tr>
+			</form>			
+		</table>
+		<?php
+			if(isset($_POST['dangnhap'])){
+				$tendn=$_POST['User']; 
+				$matkhau = $_POST["Password"];
+				$kn=mysqli_connect("localhost","root",'',"nhanvien")or die("chua ket noi");
+				$cm1 = "select * from tbthongtin where user='".$tendn."'";
+				$result1 = mysqli_query($kn, $cm1);
+				if(!($row = mysqli_fetch_array($result1)))
+				{
+					echo "Tên đăng nhập không tồn tại";
+				}
+				else{
+					if($row['user'] == $tendn)
+						if($row['pass'] == $matkhau){
+							$_SESSION['user'] = $_POST['User'];
+							header('Location:uploadfile.php');					
+						}
+						else echo "Sai mật khẩu đăng nhập";					
+				}
+			}
+			
+		?>
+	</body>
+</html>
